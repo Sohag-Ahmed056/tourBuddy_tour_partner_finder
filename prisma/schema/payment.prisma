@@ -1,0 +1,10 @@
+model Payment {
+  id            String        @id @default(uuid())
+  userId        String
+  amount        Float
+  status        PaymentStatus @default(PENDING)
+  transactionId String?
+  createdAt     DateTime      @default(now())
+
+  user Tourist @relation(fields: [userId], references: [userId])
+}

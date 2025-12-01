@@ -1,0 +1,14 @@
+model JoinRequest {
+  id           String        @id @default(uuid())
+  senderId     String
+  receiverId   String
+  travelPlanId String
+  status       RequestStatus @default(PENDING)
+  message      String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  sender     Tourist    @relation("SentRequests", fields: [senderId], references: [userId])
+  receiver   Tourist    @relation("ReceivedRequests", fields: [receiverId], references: [userId])
+  travelPlan TravelPlan @relation(fields: [travelPlanId], references: [id])
+}

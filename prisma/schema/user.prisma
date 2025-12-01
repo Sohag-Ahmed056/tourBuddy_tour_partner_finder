@@ -1,0 +1,46 @@
+// Common User table
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      UserRole @default(TOURIST)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tourist Tourist?
+  admin   Admin?
+}
+
+// Individual Tourist table
+model Tourist {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  fullName         String
+  bio              String?
+  profileImage     String?
+  interests        String[]
+  visitedCountries String[]
+  currentLocation  String?
+  isDeleted        Boolean  @default(false)
+  created_at       DateTime @default(now())
+
+  user                 User              @relation(fields: [userId], references: [id])
+  travelPlans          TravelPlan[]
+  reviewsGiven         Review[]          @relation("ReviewsGiven")
+  reviewsReceived      Review[]          @relation("ReviewsReceived")
+  joinRequestsSent     JoinRequest[]     @relation("SentRequests")
+  joinRequestsReceived JoinRequest[]     @relation("ReceivedRequests")
+  subscription         SubscriptionPlan?
+  payments             Payment[]
+}
+
+// Admin table
+model Admin {
+  id       String  @id @default(uuid())
+  userId   String  @unique
+  fullName String
+  roleDesc String? // optional description of admin role
+
+  user User @relation(fields: [userId], references: [id])
+}

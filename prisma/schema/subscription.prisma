@@ -1,0 +1,11 @@
+model SubscriptionPlan {
+  id        String           @id @default(uuid())
+  userId    String           @unique
+  package   SubscriptionType
+  price     Float
+  startDate DateTime         @default(now())
+  endDate   DateTime
+  isActive  Boolean          @default(true)
+
+  user Tourist @relation(fields: [userId], references: [userId])
+}

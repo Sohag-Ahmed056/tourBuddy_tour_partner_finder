@@ -1,0 +1,20 @@
+model TravelPlan {
+  id          String     @id @default(uuid())
+  touristId   String
+  title       String
+  destination String
+  city        String?
+  startDate   DateTime
+  endDate     DateTime
+  budgetMin   Int?
+  budgetMax   Int?
+  travelType  TravelType @default(SOLO)
+  description String?
+  visibility  Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  tourist      Tourist       @relation(fields: [touristId], references: [userId])
+  joinRequests JoinRequest[]
+  reviews      Review[]
+}

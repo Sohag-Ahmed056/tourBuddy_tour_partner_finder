@@ -1,0 +1,14 @@
+model Review {
+  id         String   @id @default(uuid())
+  tripId     String
+  reviewerId String
+  targetId   String
+  rating     Int
+  comment    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  reviewer   Tourist    @relation("ReviewsGiven", fields: [reviewerId], references: [userId])
+  target     Tourist    @relation("ReviewsReceived", fields: [targetId], references: [userId])
+  travelPlan TravelPlan @relation(fields: [tripId], references: [id])
+}
