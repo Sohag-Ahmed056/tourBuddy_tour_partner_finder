@@ -3,9 +3,10 @@ import { userRoutes } from "../modules/user/user.route";
 import { authRoutes } from "../modules/auth/auth.route";
 import { TouristRoutes } from "../modules/tourist/tourist.route";
 import { TravelRoutes } from "../modules/travel/travel.route";
-import { joinRoutes } from "../modules/join/join.route";
+
 import { reviewRoutes } from "../modules/review/review.route";
 import { paymentRoute } from "../modules/payment/payment.route";
+import { joinRoute } from "../modules/join/join.route";
 
 const router = Router();
 
@@ -28,7 +29,7 @@ const moduleRoutes = [
     },
     {
         path: '/join',
-        route: joinRoutes
+        route: joinRoute
     },
     {
         path: '/review',
