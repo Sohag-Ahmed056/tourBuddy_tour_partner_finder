@@ -17,6 +17,22 @@ const sendJoinRequest = catchAsync(async (req:Request, res:Response) => {
     });
 });
 
+
+const cancelJoinRequestController = catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params; // requestId
+    const userId = req.user?.id as string;
+
+    const result = await joinRequestService.cancelJoinRequest(id, userId);
+
+    res.status(200).json({
+        success: true,
+        message: "Join request cancelled successfully",
+        data: result,
+    });
+});
+
+
+
 const listSentJoinRequests = catchAsync(async (req:Request, res:Response) => {
     const touristId = req.user?.id;
 
@@ -63,5 +79,6 @@ export const joinController = {
     sendJoinRequest,
     listSentJoinRequests,
     listReceivedJoinRequests,
-    respondToJoinRequest
+    respondToJoinRequest,
+    cancelJoinRequestController
 }

@@ -63,6 +63,37 @@ const sendJoinRequest = async(senderId: string,  travelPlanId: string, message: 
 }
 
 
+const cancelJoinRequest = async (requestId: string, userId: string) => {
+
+    // 1️⃣ Find the join request
+    const joinRequest = await prisma.joinRequest.findUnique({
+        where: { id: requestId }
+    });
+
+    if (!joinRequest) {
+        throw new Error("Join request not found");
+    }
+
+    // 2️⃣ Only sender can cancel
+    if (joinRequest.senderId !== userId) {
+        throw new Error("You are not allowed to cancel this join request");
+    }
+
+    // 3️⃣ Only pending requests can be cancelled
+    if (joinRequest.status !== "PENDING") {
+        throw new Error("Only pending join requests can be cancelled");
+    }
+
+    // 4️⃣ Delete the join request
+    const deleted = await prisma.joinRequest.delete({
+        where: { id: requestId }
+    });
+
+    return deleted;
+};
+
+
+
 const listSentJoinRequests = async(touristId: string) => {
     const joinRequests = await prisma.joinRequest.findMany({
         where: {
@@ -128,5 +159,6 @@ export const joinRequestService={
     sendJoinRequest,
     listSentJoinRequests,
     listReceivedJoinRequests,
-    respondToJoinRequest
+    respondToJoinRequest,
+    cancelJoinRequest
 }
