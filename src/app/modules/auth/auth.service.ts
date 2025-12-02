@@ -28,6 +28,32 @@ const login = async (payload: { email: string, password: string }) => {
     }
 }
 
+const changePassword = async(userId:string, oldPassword:string, newPassword:string)=>{
+    const user = await prisma.user.findUniqueOrThrow({
+        where:{
+            id:userId
+        }
+    });
+
+    const isPasswordMatched = await bcrypt.compare(oldPassword, user.password);
+    if(!isPasswordMatched){
+        throw new ApiError(401, "Old password is incorrect!");
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword,10);
+
+    await prisma.user.update({
+        where:{
+            id:userId
+        },
+        data:{
+            password:hashedNewPassword
+        }
+    });
+
+}
+
 export const AuthService = {
-    login
+    login,
+    changePassword
 }
