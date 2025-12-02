@@ -77,10 +77,26 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
 
     const result = await UserService.getMyProfile(userId);
 
-    res.status(200).json({
+    
+    sendResponse(res, { 
+        statusCode: 200,
         success: true,
-        message: "My profile fetched successfully",
-        data: result
+        message: "User fetched successfully",
+        data: result,
+    }); 
+});
+
+  const updateUser = catchAsync(async (req: Request, res: Response) => {
+    const userId = req.user?.id as string;
+    const payload = req.body;
+
+    const result = await UserService.updateUser(userId, payload);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "User updated successfully",
+        data: result,
     });
 });
 
@@ -91,5 +107,6 @@ export const UserController = {
     createTourist,
     getAllUsersFromDB,
     createAdmin,
-    getMyProfile
+    getMyProfile,
+    updateUser,
 };

@@ -77,6 +77,19 @@ const getByIdFromDB = async (id: string): Promise<Tourist | null> => {
     return result;
 };
 
+
+const deleteTourist= async (id: string): Promise<Tourist | null> => {
+    const deletedTourist = await prisma.tourist.delete({
+        where: { id },
+    });
+
+    
+    return deletedTourist;  
+   
+}
+
+
+
 // const softDelete = async (id: string): Promise<Tourist | null> => {
 //     return await prisma.$transaction(async transactionClient => {
 //         const deletedTourist = await transactionClient.tourist.update({
@@ -95,7 +108,7 @@ const getByIdFromDB = async (id: string): Promise<Tourist | null> => {
 //             },
 //         });
 
-//         return deletedPatient;
+//         return deletedTourist;
 //     });
 // };
 

@@ -183,9 +183,46 @@ const getAllUsersFromDB = async (params: any, options: IOptions) => {
 };
 
 
+const updateUser = async (userId: string, payload: any) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId }
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  
+
+  // If the user is TOURIST, update tourist profile
+  let touristProfile = null;
+
+  if (user.role === "TOURIST") {
+    touristProfile = await prisma.tourist.update({
+      where: { userId },
+      data: {
+        fullName: payload.fullName,
+        profileImage: payload.profileImage,
+        currentLocation: payload.currentLocation,
+        visitedCountries: payload.visitedCountries,
+        interests: payload.interests,
+
+      
+        bio: payload.bio,
+      }
+    });
+  }
+
+  return {
+    tourist: touristProfile
+  };
+};
+
+
 export const UserService = {
   createTourist,
   getAllUsersFromDB,
   createAdmin,
-  getMyProfile
+  getMyProfile,
+  updateUser,
 };
