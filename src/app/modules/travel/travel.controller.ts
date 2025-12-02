@@ -29,7 +29,42 @@ const getAllTravelPlans = catchAsync(async (req: Request, res: Response) => {
         data: result,
     });
 });
+
+
+const updateTravelPlan = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const payload = req.body;   
+
+    const result = await TravelService.updateTravelPlan({ travelPlanId: id, touristId: req.user?.id as string, payload });
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Travel plan updated successfully",
+        data: result,
+    });
+}); 
+
+const deleteTravelPlan = catchAsync(async (req: Request, res: Response) => {    
+    const id = req.params.id; 
+    const userId = req.user?.id as string;
+
+
+    const result = await TravelService.deleteTravelPlan(id, userId);   
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Travel plan deleted successfully",
+        data: result,
+    });
+});     
+
+
+
+
 export const TravelController = {
     createTour,
     getAllTravelPlans,
+    updateTravelPlan
 }

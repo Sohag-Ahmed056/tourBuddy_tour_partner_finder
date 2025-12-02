@@ -72,7 +72,17 @@ const getAllUsersFromDB = async (req: Request, res: Response) => {
 };
 
   
+const getMyProfile = catchAsync(async (req: Request, res: Response) => {
+    const userId = req.user?.id as string;
 
+    const result = await UserService.getMyProfile(userId);
+
+    res.status(200).json({
+        success: true,
+        message: "My profile fetched successfully",
+        data: result
+    });
+});
 
 
 
@@ -80,5 +90,6 @@ const getAllUsersFromDB = async (req: Request, res: Response) => {
 export const UserController = {
     createTourist,
     getAllUsersFromDB,
-    createAdmin
+    createAdmin,
+    getMyProfile
 };

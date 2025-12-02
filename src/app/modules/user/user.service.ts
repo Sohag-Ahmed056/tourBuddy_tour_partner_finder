@@ -60,7 +60,19 @@ const createTourist = async (req: Request) => {
   }
 };
 
+const createAdmin = async (req: Request) => {
+  const hashPassword = await bcrypt.hash(req.body.password, 10);
 
+  const user = await prisma.user.create({
+    data: {
+      email: req.body.email,
+      password: hashPassword, // Consider hashing!
+      role: "ADMIN", // explicit but optional
+    },
+  });
+
+  return user;
+}
 
 
 
@@ -120,8 +132,60 @@ const getAllUsersFromDB = async (params: any, options: IOptions) => {
   };
 };
 
+ const getMyProfile = async (userId: string) => {
+    // Find basic user
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+    });
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    // If Tourist — return tourist-specific profile
+    if (user.role === "TOURIST") {
+        const tourist = await prisma.tourist.findUnique({
+            where: { userId: user.id },
+            include: {
+                travelPlans: true,
+                reviewsReceived: true,
+                joinRequestsReceived:true,
+                 joinRequestsSent: true,
+                subscription: true,
+                 _count: {
+                    select: {
+                        reviewsReceived: true
+                    }
+                }
+            }
+        });
+
+        return {
+            ...user,
+            profile: tourist
+        };
+    }
+
+    // If Admin — return admin profile
+    if (user.role === "ADMIN") {
+        const admin = await prisma.admin.findUnique({
+            where: { userId: user.id },
+        });
+
+        return {
+            ...user,
+            profile: admin
+        };
+    }
+
+    // Default fallback
+    return user;
+};
+
 
 export const UserService = {
   createTourist,
   getAllUsersFromDB,
+  createAdmin,
+  getMyProfile
 };
