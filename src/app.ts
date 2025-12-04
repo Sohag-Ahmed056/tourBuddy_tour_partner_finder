@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import router from "./app/routes";
@@ -24,7 +24,7 @@ app.use("/api/v1", router);
 
 // ------------------ TEST ------------------------------------------
 app.get("/", (req, res) => {
-  res.json({ message: "Bun + Express API is running 🚀" });
+  res.json({ message: "Don't worry, I'm running smoothly!" });
 });
 
 export default app;

@@ -5,6 +5,7 @@ import sendResponse from "../../shared/sendResponse";
 import { UserService } from "./user.service";
 import pick from "../../helper/pick";
 import { stringSearchableFields } from "./user.constant";
+import { fileUploader } from "../../helper/fileUploader";
 
 
 const createTourist= catchAsync(async(req: Request, res: Response)=>{
@@ -86,20 +87,29 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
     }); 
 });
 
-  const updateUser = catchAsync(async (req: Request, res: Response) => {
-    const userId = req.user?.id as string;
-    const payload = req.body;
+const updateUser = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?.id as string;
 
-    const result = await UserService.updateUser(userId, payload);
+  // Parse payload from FormData JSON if sent as "data"
+  const payload = req.body.data ? JSON.parse(req.body.data) : req.body;
 
-    sendResponse(res, {
-        statusCode: 200,
-        success: true,
-        message: "User updated successfully",
-        data: result,
-    });
+  // Optional file upload
+  if (req.file) {
+    const uploadResult = await fileUploader.uploadToCloudinary(req.file);
+    if (uploadResult) {
+      payload.profileImage = uploadResult.secure_url;
+    }
+  }
+
+  const result = await UserService.updateUser(userId, payload);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User updated successfully",
+    data: result,
+  });
 });
-
 
 
 

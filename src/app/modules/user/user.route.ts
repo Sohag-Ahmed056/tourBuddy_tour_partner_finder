@@ -20,7 +20,7 @@ router.post("/create-admin",auth("ADMIN"), UserController.createAdmin);
 
 router.get("/all", UserController.getAllUsersFromDB);
 router.get("/my-profile",auth("TOURIST"), UserController.getMyProfile);
-router.put("/update-user",auth("TOURIST"), UserController.updateUser);
+router.put("/update-user", fileUploader.upload.single('file'),auth("TOURIST"), UserController.updateUser);
 
 
 export const userRoutes = router;

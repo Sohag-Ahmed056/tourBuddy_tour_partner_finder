@@ -66,5 +66,6 @@ const deleteTravelPlan = catchAsync(async (req: Request, res: Response) => {
 export const TravelController = {
     createTour,
     getAllTravelPlans,
-    updateTravelPlan
+    updateTravelPlan,
+    deleteTravelPlan
 }

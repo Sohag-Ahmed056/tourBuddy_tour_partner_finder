@@ -8,27 +8,29 @@ import { enumSearchableFields, stringSearchableFields } from "./user.constant";
 
 const createTourist = async (req: Request) => {
 
+  // Parse nested data from FormData
+  const body = req.body.data ? JSON.parse(req.body.data) : req.body;
 
+  // Optional file upload
+  if (req.file) {
+    const uploadResult = await fileUploader.uploadToCloudinary(req.file)
+    body.tourist.profileImage = uploadResult?.secure_url
+  }
 
-    if (req.file) {
-        const uploadResult = await fileUploader.uploadToCloudinary(req.file)
-        req.body.tourist.profileImage = uploadResult?.secure_url
-    }
-
-    const hashPassword = await bcrypt.hash(req.body.password, 10);
+  const hashPassword = await bcrypt.hash(body.password, 10);
 
   try {
     const result = await prisma.$transaction(async (tx) => {
-      // 1. Create the user
+
+      // Create User
       const user = await tx.user.create({
         data: {
-          email: req.body.tourist.email,
-          password: hashPassword, // Consider hashing!
-          role: "TOURIST", // explicit but optional
+          email: body.tourist.email,
+          password: hashPassword,
+          role: "TOURIST",
         },
       });
 
-    
       const {
         fullName,
         bio,
@@ -36,8 +38,9 @@ const createTourist = async (req: Request) => {
         interests,
         visitedCountries,
         currentLocation,
-      } = req.body.tourist;
+      } = body.tourist;
 
+      // Create Tourist
       const tourist = await tx.tourist.create({
         data: {
           userId: user.id,
@@ -54,11 +57,16 @@ const createTourist = async (req: Request) => {
     });
 
     return result;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      throw new Error("Email already exists");
+    }
+
     console.error("Error creating tourist:", error);
     throw error;
   }
 };
+
 
 const createAdmin = async (req: Request) => {
   const hashPassword = await bcrypt.hash(req.body.password, 10);
@@ -185,37 +193,38 @@ const getAllUsersFromDB = async (params: any, options: IOptions) => {
 
 const updateUser = async (userId: string, payload: any) => {
   const user = await prisma.user.findUnique({
-    where: { id: userId }
+    where: { id: userId },
   });
 
   if (!user) {
     throw new Error("User not found");
   }
 
-  
-
-  // If the user is TOURIST, update tourist profile
+  // Only update tourist profile if the user is a TOURIST
   let touristProfile = null;
 
   if (user.role === "TOURIST") {
+    // Build the update object dynamically
+    const updateData: any = {
+      fullName: payload.fullName,
+      bio: payload.bio,
+      currentLocation: payload.currentLocation,
+      visitedCountries: payload.visitedCountries,
+      interests: payload.interests,
+    };
+
+    // Only set profileImage if it's provided
+    if (payload.profileImage) {
+      updateData.profileImage = payload.profileImage;
+    }
+
     touristProfile = await prisma.tourist.update({
       where: { userId },
-      data: {
-        fullName: payload.fullName,
-        profileImage: payload.profileImage,
-        currentLocation: payload.currentLocation,
-        visitedCountries: payload.visitedCountries,
-        interests: payload.interests,
-
-      
-        bio: payload.bio,
-      }
+      data: updateData,
     });
   }
 
-  return {
-    tourist: touristProfile
-  };
+  return { tourist: touristProfile };
 };
 
 

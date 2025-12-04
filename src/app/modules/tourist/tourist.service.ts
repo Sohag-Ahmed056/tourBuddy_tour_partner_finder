@@ -83,7 +83,7 @@ const deleteTourist= async (id: string): Promise<Tourist | null> => {
         where: { id },
     });
 
-    
+
     return deletedTourist;  
    
 }
@@ -115,5 +115,6 @@ const deleteTourist= async (id: string): Promise<Tourist | null> => {
 export const TouristService = {
     getAllFromDB,
     getByIdFromDB,
+    deleteTourist,
     // softDelete,
 };
