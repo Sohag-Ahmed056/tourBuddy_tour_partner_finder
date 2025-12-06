@@ -53,31 +53,52 @@ const getAllTours = async () => {
 };
 
 
+const getSingleTour = async (id: string) => {
+  const result = await prisma.travelPlan.findUnique({
+    where: { id },
+    include: {
+      tourist: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
+
+  if (!result) {
+    throw new Error("Travel plan not found");
+  }
+
+  return result;
+};
+
+
 const updateTravelPlan = async ({
   travelPlanId,
   touristId,
   payload,
+
 }: {
   travelPlanId: string;
   touristId: string;
   payload: any;
 }) => {
   // 1 Check user subscription
-  const subscription = await prisma.subscriptionPlan.findUnique({
-    where: { userId: touristId, isActive: true },
-  });
+  // const subscription = await prisma.subscriptionPlan.findUnique({
+  //   where: { userId: touristId, isActive: true },
+  // });
 
-  // 2 Count user travel plans
-  const travelCount = await prisma.travelPlan.count({
-    where: { touristId },
-  });
+  // // 2 Count user travel plans
+  // const travelCount = await prisma.travelPlan.count({
+  //   where: { touristId },
+  // });
 
-  // 3 Free users → max 3 plans
-  if (!subscription && travelCount >= 3) {
-    throw new Error(
-      "Free users can update only 3 travel plans. Please subscribe to continue."
-    );
-  }
+  // // 3 Free users → max 3 plans
+  // if (!subscription && travelCount >= 3) {
+  //   throw new Error(
+  //     "Free users can update only 3 travel plans. Please subscribe to continue."
+  //   );
+  // }
 
   // 4 Ensure travel plan exists
   const existingPlan = await prisma.travelPlan.findUnique({
@@ -139,6 +160,10 @@ const deleteTravelPlan = async (
   await prisma.joinRequest.deleteMany({
     where: { travelPlanId }
   });
+  await prisma.review.deleteMany({
+  where: { tripId: travelPlanId }
+});
+
 
   // Delete the travel plan
   const deletedPlan = await prisma.travelPlan.delete({
@@ -154,4 +179,5 @@ export const TravelService = {
     getAllTours,
     updateTravelPlan,
     deleteTravelPlan,
+    getSingleTour,
 }

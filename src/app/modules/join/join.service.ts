@@ -35,18 +35,18 @@ const sendJoinRequest = async(senderId: string,  travelPlanId: string, message: 
     }
 
 
-     const subscription = await prisma.subscriptionPlan.findUnique({
-        where: { userId: senderId, isActive: true }
-    });
+    //  const subscription = await prisma.subscriptionPlan.findUnique({
+    //     where: { userId: senderId, isActive: true }
+    // });
 
-    // 5️ If free user, apply limit
-    const sentCount = await prisma.joinRequest.count({
-        where: { senderId }
-    });
+    // // 5️ If free user, apply limit
+    // const sentCount = await prisma.joinRequest.count({
+    //     where: { senderId }
+    // });
 
-    if (!subscription && sentCount >= 10) {
-        throw new Error("Free users can send only 10 join requests. Subscribe to send unlimited requests.");
-    }
+    // if (!subscription && sentCount >= 10) {
+    //     throw new Error("Free users can send only 10 join requests. Subscribe to send unlimited requests.");
+    // }
 
 
     const joinRequest = await prisma.joinRequest.create({

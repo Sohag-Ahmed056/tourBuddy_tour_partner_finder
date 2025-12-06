@@ -8,16 +8,18 @@ const login = catchAsync(async (req: Request, res: Response) => {
     const { accessToken, refreshToken } = result;
 
     res.cookie("accessToken", accessToken, {
-        secure: true,
+        secure: false,
         httpOnly: true,
-        sameSite: "none",
-        maxAge: 1000 * 60 * 60
+        sameSite: "lax",
+        path: "/",
+        maxAge:60 * 60 * 24
     })
     res.cookie("refreshToken", refreshToken, {
-        secure: true,
+        secure: false,
         httpOnly: true,
-        sameSite: "none",
-        maxAge: 1000 * 60 * 60 * 24 * 90
+        sameSite: "lax",
+        path: "/",
+        maxAge:  60 * 60 * 24 * 90
     })
 
     sendResponse(res, {

@@ -192,6 +192,7 @@ const getAllUsersFromDB = async (params: any, options: IOptions) => {
 
 
 const updateUser = async (userId: string, payload: any) => {
+
   const user = await prisma.user.findUnique({
     where: { id: userId },
   });

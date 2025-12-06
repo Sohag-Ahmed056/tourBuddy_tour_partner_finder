@@ -5,9 +5,10 @@ import { JwtPayload } from "jsonwebtoken";
 
 const auth = (...roles: string[]) => {
     return async (req: Request , res: Response, next: NextFunction) => {
+        console.log("cookies", req.cookies);
         try {
-            const token = req.cookies.accessToken;
-
+            const token =  req.headers.authorization?.split(" ")[1] || req.cookies.accessToken;
+            
             if (!token) {
                 throw new ApiError(401, "You are not authorized!")
             }
@@ -19,7 +20,7 @@ const auth = (...roles: string[]) => {
                 console.log(verifyUser);
 
             if (roles.length && !roles.includes(verifyUser.role)) {
-                throw new ApiError(404, "You are not authorized!")
+                throw new ApiError(404, "You are not in the required role!")
             }
 
             next();

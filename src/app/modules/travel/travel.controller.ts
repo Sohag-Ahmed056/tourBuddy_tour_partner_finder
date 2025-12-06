@@ -30,6 +30,19 @@ const getAllTravelPlans = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getSingleTravelPlan = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = await TravelService.getSingleTour(id);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Travel plan retrieved successfully",
+    data: result,
+  });
+});
+
 
 const updateTravelPlan = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id;
@@ -67,5 +80,6 @@ export const TravelController = {
     createTour,
     getAllTravelPlans,
     updateTravelPlan,
-    deleteTravelPlan
+    deleteTravelPlan,
+    getSingleTravelPlan
 }
