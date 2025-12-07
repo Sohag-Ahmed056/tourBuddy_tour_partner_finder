@@ -9,9 +9,10 @@ const createSubscriptionSession = async (req: Request, res: Response) => {
 
     const userId = req.user?.id;
     console.log(userId);
+    console.log(req.body);
     const { planType, price } = req.body;
     const session = await paymentService.createStripeSession(userId as string, planType, price);
-
+    
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -23,19 +24,32 @@ const createSubscriptionSession = async (req: Request, res: Response) => {
 
 
 const handleStripeWebhook = async (req: Request, res: Response) => {
-        const webhookSecret = "whsec_7aa0e876564d7172ed1ebbda82f18cd6c740ac93ff44efecbf654c0d71bf3f1c"
-    const sig = req.headers["stripe-signature"];
-    const event = stripe.webhooks.constructEvent(req.body, sig!, webhookSecret);
+  console.log("🔥 Webhook hit!");
 
-    const response = await paymentService.webhookHandler(event);
+  const sig = req.headers["stripe-signature"] as string;
+  const webhookSecret ="whsec_49ab34e833c62ff966942cbc49bb97c311bf451cdbbbd8dfa3046ea3a1b09db1";
 
+  let event;
+  try {
+    // ✅ Async version ensures SubtleCrypto works in Node >= 18 / ESM
+    event = await stripe.webhooks.constructEventAsync(
+      req.body as Buffer,
+      sig,
+      webhookSecret
+    );
+    console.log("✅ Webhook signature verified!", event.type);
+  } catch (err: any) {
+    console.error("❌ Webhook signature verification failed.", err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
 
-    sendResponse(res, {
-        statusCode: 200,
-        success: true,
-        message: "Webhook handled successfully",
-        data: response
-    });
+  try {
+    await paymentService.webhookHandler(event);
+    res.status(200).json({ received: true });
+  } catch (err: any) {
+    console.error("❌ Webhook handler error:", err.message);
+    res.status(500).send("Webhook handler failed");
+  }
 };
 
 export const paymentController = {

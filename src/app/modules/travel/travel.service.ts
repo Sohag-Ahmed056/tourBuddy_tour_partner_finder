@@ -83,22 +83,22 @@ const updateTravelPlan = async ({
   touristId: string;
   payload: any;
 }) => {
-  // 1 Check user subscription
-  // const subscription = await prisma.subscriptionPlan.findUnique({
-  //   where: { userId: touristId, isActive: true },
-  // });
+  //1 Check user subscription
+  const subscription = await prisma.subscriptionPlan.findUnique({
+    where: { userId: touristId, isActive: true },
+  });
 
-  // // 2 Count user travel plans
-  // const travelCount = await prisma.travelPlan.count({
-  //   where: { touristId },
-  // });
+  // 2 Count user travel plans
+  const travelCount = await prisma.travelPlan.count({
+    where: { touristId },
+  });
 
-  // // 3 Free users → max 3 plans
-  // if (!subscription && travelCount >= 3) {
-  //   throw new Error(
-  //     "Free users can update only 3 travel plans. Please subscribe to continue."
-  //   );
-  // }
+  // 3 Free users → max 3 plans
+  if (!subscription && travelCount >= 5) {
+    throw new Error(
+      "Free users can update only 3 travel plans. Please subscribe to continue."
+    );
+  }
 
   // 4 Ensure travel plan exists
   const existingPlan = await prisma.travelPlan.findUnique({
