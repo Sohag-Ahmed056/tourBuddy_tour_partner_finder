@@ -17,6 +17,7 @@ router.post(
 )
 
 router.post("/create-admin",auth("ADMIN"), UserController.createAdmin);
+router.delete("/delete", UserController.deleteUser);
 
 router.get("/all", UserController.getAllUsersFromDB);
 router.get("/my-profile",auth("TOURIST"), UserController.getMyProfile);

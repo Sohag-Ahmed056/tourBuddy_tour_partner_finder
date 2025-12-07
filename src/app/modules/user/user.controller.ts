@@ -111,6 +111,19 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
+  const touristId= req.body.id;
+
+  const result = await UserService.deleteTourist(touristId);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User deleted successfully",
+    data: result,
+  });
+});
+
 
 
 export const UserController = {
@@ -119,4 +132,5 @@ export const UserController = {
     createAdmin,
     getMyProfile,
     updateUser,
+    deleteUser
 };

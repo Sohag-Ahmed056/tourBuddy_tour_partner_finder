@@ -1,7 +1,8 @@
 import { send } from "process";
 import { prisma } from "../../lib/prisma";
 
-const sendJoinRequest = async(senderId: string,  travelPlanId: string, message: string) => {
+const sendJoinRequest = async(senderId: string,  id: string, message: string) => {
+    const travelPlanId = id;
 
     const receiverTravelPlan = await prisma.travelPlan.findUnique({
         where: {
@@ -65,7 +66,7 @@ const sendJoinRequest = async(senderId: string,  travelPlanId: string, message: 
 
 const cancelJoinRequest = async (requestId: string, userId: string) => {
 
-    // 1️⃣ Find the join request
+    //  Find the join request
     const joinRequest = await prisma.joinRequest.findUnique({
         where: { id: requestId }
     });
@@ -74,17 +75,17 @@ const cancelJoinRequest = async (requestId: string, userId: string) => {
         throw new Error("Join request not found");
     }
 
-    // 2️⃣ Only sender can cancel
+    //  Only sender can cancel
     if (joinRequest.senderId !== userId) {
         throw new Error("You are not allowed to cancel this join request");
     }
 
-    // 3️⃣ Only pending requests can be cancelled
+    // Only pending requests can be cancelled
     if (joinRequest.status !== "PENDING") {
         throw new Error("Only pending join requests can be cancelled");
     }
 
-    // 4️⃣ Delete the join request
+    // Delete the join request
     const deleted = await prisma.joinRequest.delete({
         where: { id: requestId }
     });

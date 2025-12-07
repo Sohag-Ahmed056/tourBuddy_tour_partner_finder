@@ -228,6 +228,15 @@ const updateUser = async (userId: string, payload: any) => {
   return { tourist: touristProfile };
 };
 
+const deleteTourist = async (touristId: string) => {
+
+  
+  const deletedTourist = await prisma.tourist.delete({
+    where: { id: touristId },
+  });
+  return deletedTourist;
+};
+
 
 export const UserService = {
   createTourist,
@@ -235,4 +244,5 @@ export const UserService = {
   createAdmin,
   getMyProfile,
   updateUser,
+  deleteTourist
 };

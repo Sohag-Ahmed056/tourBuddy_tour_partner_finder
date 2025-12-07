@@ -4,10 +4,11 @@ import { joinRequestService } from "./join.service";
 import sendResponse from "../../shared/sendResponse";
 
 const sendJoinRequest = catchAsync(async (req:Request, res:Response) => {
-    const { travelPlanId, message } = req.body;
+    const { id, message } = req.body;
+    console.log("Request Body:", req.body); // Debugging line
     const senderId = req.user?.id; // Assuming req.user contains the authenticated user's info
 
-    const joinRequest = await joinRequestService.sendJoinRequest(senderId as string, travelPlanId, message);
+    const joinRequest = await joinRequestService.sendJoinRequest(senderId as string, id, message);
 
     sendResponse(res, {
         statusCode: 201,
