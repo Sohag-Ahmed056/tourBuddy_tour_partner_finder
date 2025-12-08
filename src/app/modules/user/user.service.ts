@@ -70,6 +70,7 @@ const createTourist = async (req: Request) => {
 };
 
 
+
 const createAdmin = async (req: Request) => {
   const hashPassword = await bcrypt.hash(req.body.password, 10);
 
