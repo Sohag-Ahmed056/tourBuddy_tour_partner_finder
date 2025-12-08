@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import { TravelService } from "./travel.service";
-import sendResponse from "../../shared/sendResponse";
+import sendResponse from "../../shared/sendResponse.js";
 
 const createTour = catchAsync(async (req: Request, res: Response) => {
     const touristId= req.user?.id as string;

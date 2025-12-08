@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 import catchAsync from "../../shared/catchAsync"
 import { TouristService } from "./tourist.service";
-import sendResponse from "../../shared/sendResponse";
+import sendResponse from "../../shared/sendResponse.js";
 import { touristFilterableFields } from "./tourist.constant";
 import pick from "../../helper/pick";
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import { ReviewService } from "./review.service";
-import sendResponse from "../../shared/sendResponse";
+import sendResponse from "../../shared/sendResponse.js";
 
 
 const createReview= catchAsync(async(req:Request,res:Response)=>{

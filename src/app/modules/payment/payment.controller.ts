@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import sendResponse from "../../shared/sendResponse";
+import sendResponse from "../../shared/sendResponse.js";
 import stripe from "../../helper/stripe";
 import { paymentService } from "./payment.service";
 
