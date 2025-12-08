@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { TouristController } from "./tourist.controller";
+import { TouristController } from "./tourist.controller.js";
 
 const router = Router();
 

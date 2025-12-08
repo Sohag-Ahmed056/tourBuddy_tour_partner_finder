@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import catchAsync from "../../shared/catchAsync";
-import { joinRequestService } from "./join.service";
+import catchAsync from "../../shared/catchAsync.js";
+import { joinRequestService } from "./join.service.js";
 import sendResponse from "../../shared/sendResponse.js";
 
 const sendJoinRequest = catchAsync(async (req:Request, res:Response) => {

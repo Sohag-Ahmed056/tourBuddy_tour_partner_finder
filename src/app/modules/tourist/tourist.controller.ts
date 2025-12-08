@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 
 
-import catchAsync from "../../shared/catchAsync"
-import { TouristService } from "./tourist.service";
+import catchAsync from "../../shared/catchAsync.js";
+import { TouristService } from "./tourist.service.js";
 import sendResponse from "../../shared/sendResponse.js";
-import { touristFilterableFields } from "./tourist.constant";
-import pick from "../../helper/pick";
+import { touristFilterableFields } from "./tourist.constant.js";
+import pick from "../../helper/pick.js";
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
     const filters = pick(req.query, touristFilterableFields);

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import catchAsync from "../../shared/catchAsync";
+import catchAsync from "../../shared/catchAsync.js";
 import sendResponse from "../../shared/sendResponse.js";
-import { UserService } from "./user.service";
-import pick from "../../helper/pick";
-import { stringSearchableFields } from "./user.constant";
-import { fileUploader } from "../../helper/fileUploader";
+import { UserService } from "./user.service.js";
+import pick from "../../helper/pick.js";
+import { stringSearchableFields } from "./user.constant.js";
+import { fileUploader } from "../../helper/fileUploader.js";
 
 
 const createTourist= catchAsync(async(req: Request, res: Response)=>{

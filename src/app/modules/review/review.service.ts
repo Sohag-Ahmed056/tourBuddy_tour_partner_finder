@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 
 const createReview= async(travelPlanId:string, reviwerId:string, rating:number, comment:string)=>{
 

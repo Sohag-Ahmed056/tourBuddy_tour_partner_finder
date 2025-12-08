@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { UserController } from "./user.controller";
-import { fileUploader } from "../../helper/fileUploader";
-import { UserValidation } from "./user.validation";
-import auth from "../../middlewares/auth";
+import { UserController } from "./user.controller.js";
+import { fileUploader } from "../../helper/fileUploader.js";
+import { UserValidation } from "./user.validation.js";
+import auth from "../../middlewares/auth.js";
 
 
 const router = Router();

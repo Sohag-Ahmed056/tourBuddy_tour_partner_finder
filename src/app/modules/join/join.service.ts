@@ -1,5 +1,5 @@
 
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 
 const sendJoinRequest = async(senderId: string,  id: string, message: string) => {
     const travelPlanId = id;

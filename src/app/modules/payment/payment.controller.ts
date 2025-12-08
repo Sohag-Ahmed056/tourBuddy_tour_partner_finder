@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
 import sendResponse from "../../shared/sendResponse.js";
-import stripe from "../../helper/stripe";
-import { paymentService } from "./payment.service";
+import stripe from "../../helper/stripe.js";
+import { paymentService } from "./payment.service.js";
 
 
 const createSubscriptionSession = async (req: Request, res: Response) => {

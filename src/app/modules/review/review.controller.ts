@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import catchAsync from "../../shared/catchAsync";
-import { ReviewService } from "./review.service";
+import catchAsync from "../../shared/catchAsync.js";
+import { ReviewService } from "./review.service.js";
 import sendResponse from "../../shared/sendResponse.js";
 
 

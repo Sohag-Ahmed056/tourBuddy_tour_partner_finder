@@ -1,5 +1,5 @@
-import stripe from "../../helper/stripe";
-import { prisma } from "../../lib/prisma";
+import stripe from "../../helper/stripe.js";
+import { prisma } from "../../lib/prisma.js";
 
 const createStripeSession=async(userId:string,planType:string,price:number)=>{
 

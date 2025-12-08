@@ -1,11 +1,11 @@
 import { Request } from "express";
-import { prisma } from "../../lib/prisma";
-import { fileUploader } from "../../helper/fileUploader";
+import { prisma } from "../../lib/prisma.js";
+import { fileUploader } from "../../helper/fileUploader.js";
 import bcrypt from "bcrypt";
-import { IOptions, paginationHelper } from "../../helper/pagination";
+import { IOptions, paginationHelper } from "../../helper/pagination.js";
 
-import { stringSearchableFields } from "./user.constant";
-import { Prisma } from "../../../../prisma/generated/prisma/client";
+import { stringSearchableFields } from "./user.constant.js";
+import { Prisma } from "../../../../prisma/generated/prisma/client.js";
 
 
 const createTourist = async (req: Request) => {

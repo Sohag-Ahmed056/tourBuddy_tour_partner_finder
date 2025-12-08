@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import catchAsync from "../../shared/catchAsync";
-import { TravelService } from "./travel.service";
+import catchAsync from "../../shared/catchAsync.js";
+import { TravelService } from "./travel.service.js";
 import sendResponse from "../../shared/sendResponse.js";
 
 const createTour = catchAsync(async (req: Request, res: Response) => {

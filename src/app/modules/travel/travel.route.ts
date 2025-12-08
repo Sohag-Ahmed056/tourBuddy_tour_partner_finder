@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { TravelController } from "./travel.controller";
-import auth from "../../middlewares/auth";
+import { TravelController } from "./travel.controller.js";
+import auth from "../../middlewares/auth.js";
 
 
 const router = Router();

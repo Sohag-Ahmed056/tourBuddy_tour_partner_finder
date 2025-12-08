@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import ApiError from "../error/appError";
-import { jwtHelper } from "../helper/jwtHelper";
+import ApiError from "../error/appError.js";
+import { jwtHelper } from "../helper/jwtHelper.js";
 import { JwtPayload } from "jsonwebtoken";
 
 const auth = (...roles: string[]) => {

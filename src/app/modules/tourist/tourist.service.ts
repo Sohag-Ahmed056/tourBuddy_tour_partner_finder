@@ -1,9 +1,9 @@
 
 import { Prisma, Tourist } from "../../../../prisma/generated/prisma/client";
-import { IOptions, paginationHelper } from "../../helper/pagination";
-import { prisma } from "../../lib/prisma";
-import { touristSearchableFields } from "./tourist.constant";
-import { ITouristFilter } from "./tourist.interface";
+import { IOptions, paginationHelper } from "../../helper/pagination.js";
+import { prisma } from "../../lib/prisma.js";
+import { touristSearchableFields } from "./tourist.constant.js";
+import { ITouristFilter } from "./tourist.interface.js";
 
 const getAllFromDB = async (
     filters: ITouristFilter,

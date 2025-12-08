@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { joinController } from "./join.controller";
-import auth from "../../middlewares/auth";
+import { joinController } from "./join.controller.js";
+import auth from "../../middlewares/auth.js";
 
 
 const router = Router();
