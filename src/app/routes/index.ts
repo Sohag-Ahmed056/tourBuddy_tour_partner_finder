@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { userRoutes } from "../modules/user/user.route";
-import { authRoutes } from "../modules/auth/auth.route";
-import { TouristRoutes } from "../modules/tourist/tourist.route";
-import { TravelRoutes } from "../modules/travel/travel.route";
-import { joinRoute } from "../modules/join/join.route";
-import { reviewRoutes } from "../modules/review/review.route";
-import { paymentRoute } from "../modules/payment/payment.route";
+import { userRoutes } from "../modules/user/user.route.js";
+import { authRoutes } from "../modules/auth/auth.route.js";
+import { TouristRoutes } from "../modules/tourist/tourist.route.js";
+import { TravelRoutes } from "../modules/travel/travel.route.js";
+import { joinRoute } from "../modules/join/join.route.js";
+import { reviewRoutes } from "../modules/review/review.route.js";
+import { paymentRoute } from "../modules/payment/payment.route.js";
+
 
 const router = Router();
 
