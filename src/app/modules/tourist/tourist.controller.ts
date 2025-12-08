@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { Prisma } from "../../../../prisma/generated/prisma/browser";
-import { IOptions } from "../../helper/pagination";
+
+
 import catchAsync from "../../shared/catchAsync"
 import { TouristService } from "./tourist.service";
 import sendResponse from "../../shared/sendResponse";

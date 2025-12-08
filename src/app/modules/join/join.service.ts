@@ -1,4 +1,4 @@
-import { send } from "process";
+
 import { prisma } from "../../lib/prisma";
 
 const sendJoinRequest = async(senderId: string,  id: string, message: string) => {

@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { IOptions } from "../../helper/pagination";
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendResponse";
 import { UserService } from "./user.service";
