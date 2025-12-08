@@ -2,7 +2,8 @@
   "name": "assignment_8",
   "module": "index.ts",
   "type": "module",
-  "private": true,
+  "main": "src/app.js",
+  
   "scripts": {
     "dev": "bun run src/server.ts"
   },
