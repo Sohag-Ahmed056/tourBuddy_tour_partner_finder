@@ -9,10 +9,10 @@ dotenv.config();
 const app = express();
 
 // ------------------ CORS (before webhook) -------------------------
-// app.use(cors({
-//   origin: 'http://localhost:3000', 
-//   credentials: true
-// }));
+app.use(cors({
+  origin: 'http://localhost:3000', 
+  credentials: true
+}));
 
 // ------------------ WEBHOOK HANDLER (MUST BE FIRST) ---------------
 // This must come BEFORE express.json() middleware

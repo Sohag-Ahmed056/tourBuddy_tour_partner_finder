@@ -6,7 +6,7 @@ import config from './config';
 async function bootstrap() {
     // This variable will hold our server instance
     let server: Server;
-    const port = config.port || 5000;
+    const port = config.port;
 
     try {
         // Start the server
