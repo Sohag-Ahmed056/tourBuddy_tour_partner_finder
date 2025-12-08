@@ -2,8 +2,9 @@ import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import router from "./app/routes/index.js";
-import { paymentController } from "./app/modules/payment/payment.controller";
+
 import cors from 'cors'
+import { paymentController } from "./app/modules/payment/payment.controller.js";
 
 dotenv.config();
 const app = express();

@@ -3,6 +3,7 @@ import sendResponse from "../../shared/sendResponse";
 import catchAsync from "../../shared/catchAsync";
 import { AuthService } from "./auth.service";
 
+
 const login = catchAsync(async (req: Request, res: Response) => {
     const result = await AuthService.login(req.body);
     const { accessToken, refreshToken } = result;
