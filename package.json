@@ -1,12 +1,12 @@
 {
   "name": "assignment_8",
   "module": "index.ts",
-  "type": "module",
+ 
   "main": "src/app.js",
   "scripts": {
     "dev": "bun run src/server.ts",
     "build": "tsc",
-    "start": "node ./dist/src/server.js",
+    "start": "node ./dist/server.js",
 
     "db:generate": "prisma generate --schema=./prisma/schema",
     "db:migrate": "prisma migrate --schema=./prisma/schema",

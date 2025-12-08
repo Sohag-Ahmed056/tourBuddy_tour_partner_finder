@@ -5,7 +5,10 @@ import bcrypt from "bcrypt";
 import { IOptions, paginationHelper } from "../../helper/pagination.js";
 
 import { stringSearchableFields } from "./user.constant.js";
-import { Prisma } from "../../../../prisma/generated/prisma/client.js";
+import { Prisma } from "@prisma/client";
+
+
+
 
 
 const createTourist = async (req: Request) => {
@@ -22,7 +25,7 @@ const createTourist = async (req: Request) => {
   const hashPassword = await bcrypt.hash(body.password, 10);
 
   try {
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
 
       // Create User
       const user = await tx.user.create({
