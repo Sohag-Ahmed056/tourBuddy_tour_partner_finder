@@ -1,7 +1,7 @@
 import multer from 'multer';
 import path from 'path';
 import { v2 as cloudinary } from 'cloudinary';
-import config from '../../config';
+import config from '../../config/index.js';
 
 
 

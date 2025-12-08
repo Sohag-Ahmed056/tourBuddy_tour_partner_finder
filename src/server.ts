@@ -1,6 +1,6 @@
 import { Server } from 'http';
 import app from './app.js';
-import config from './config';
+import config from './config/index.js';
 
 
 async function bootstrap() {
