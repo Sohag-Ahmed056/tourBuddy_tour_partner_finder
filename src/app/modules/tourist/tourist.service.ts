@@ -1,4 +1,5 @@
-import { Prisma, Tourist } from "../../../../prisma/generated/prisma/browser";
+
+import { Prisma, Tourist } from "../../../../prisma/generated/prisma/client";
 import { IOptions, paginationHelper } from "../../helper/pagination";
 import { prisma } from "../../lib/prisma";
 import { touristSearchableFields } from "./tourist.constant";
@@ -67,7 +68,7 @@ const getAllFromDB = async (
     };
 };
 
-const getByIdFromDB = async (id: string): Promise<Tourist | null> => {
+const getByIdFromDB = async (id: string): Promise<Tourist| null> => {
     const result = await prisma.tourist.findUnique({
         where: {
             id,

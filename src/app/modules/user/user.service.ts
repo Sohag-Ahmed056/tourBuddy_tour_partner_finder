@@ -3,8 +3,9 @@ import { prisma } from "../../lib/prisma";
 import { fileUploader } from "../../helper/fileUploader";
 import bcrypt from "bcrypt";
 import { IOptions, paginationHelper } from "../../helper/pagination";
-import { Prisma } from "../../../../prisma/generated/prisma/browser";
+
 import { stringSearchableFields } from "./user.constant";
+import { Prisma } from "../../../../prisma/generated/prisma/client";
 
 
 const createTourist = async (req: Request) => {
