@@ -27,9 +27,9 @@ const createStripeSession=async(userId:string,planType:string,price:number)=>{
 const webhookHandler = async (event: any) => {
    if (event.type === "checkout.session.completed") {
       const session = event.data.object;
-      const userId =  "19258548-8774-4dd1-9fc5-391a907750d3"; //  session.metadata.userId;                 
-      const planType = "MONTHLY";                                        //session.metadata.planType;
-      const price = 25 ;                                     //Number(session.metadata.price);
+      const userId =  session.metadata.userId; //  session.metadata.userId;                 
+      const planType = session.metadata.planType;                                        //session.metadata.planType;
+      const price = Number(session.metadata.price);                                     //Number(session.metadata.price);
 
       console.log("Processing subscription for user:", userId);
 
