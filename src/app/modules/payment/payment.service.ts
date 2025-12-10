@@ -5,7 +5,7 @@ const createStripeSession=async(userId:string,planType:string,price:number)=>{
 
        const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      success_url: `${process.env.CLIENT_URL}/payment/success?userId=${userId}`,
+      success_url: `${process.env.CLIENT_URL}/payment/success`,
       cancel_url: `${process.env.CLIENT_URL}/payment/cancel`,
       line_items: [
         {

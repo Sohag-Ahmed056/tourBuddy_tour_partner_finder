@@ -86,6 +86,24 @@ const getMyProfile = catchAsync(async (req: Request, res: Response) => {
     }); 
 });
 
+
+const getSingleProfile = async (req: Request, res: Response) => {
+    
+        const  userId  = req.params.id;
+        console.log("User ID:", userId);
+        console.log("params", req.params);
+        
+
+        const result = await UserService.getSingleProfile(userId);
+
+        sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "User fetched successfully",
+            data: result,
+        });
+};
+
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user?.id as string;
 
@@ -130,6 +148,7 @@ export const UserController = {
     getAllUsersFromDB,
     createAdmin,
     getMyProfile,
+    getSingleProfile,
     updateUser,
     deleteUser
 };

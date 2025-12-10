@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma.js";
 
 
-export const createTour = async ({ payload, touristId }: { payload: any; touristId: string }) => {
+ const createTour = async ({ payload, touristId }: { payload: any; touristId: string }) => {
     
     const subscription = await prisma.subscriptionPlan.findUnique({
         where: { userId: touristId, isActive: true },
@@ -38,19 +38,123 @@ export const createTour = async ({ payload, touristId }: { payload: any; tourist
 }
 
 
-const getAllTours = async () => {
+// const getAllTours = async () => {
+//     const result = await prisma.travelPlan.findMany({
+//         include: {
+//             tourist: {
+//                 include: {
+//                     user: true
+//                 }
+//             }
+//         }
+//     });
+
+//     return result;
+// };
+
+
+const getAllTours = async (filters?: {
+    destination?: string;
+    city?: string;
+    travelType?: string;
+    budgetMin?: number;
+    budgetMax?: number;
+    startDate?: Date;
+    endDate?: Date;
+    search?: string;
+}) => {
+    const where: any = {
+        visibility: true, // Only show visible travel plans
+    };
+
+    // Apply search filter (searches across multiple fields)
+    if (filters?.search) {
+        where.OR = [
+            { title: { contains: filters.search, mode: 'insensitive' } },
+            { destination: { contains: filters.search, mode: 'insensitive' } },
+            { city: { contains: filters.search, mode: 'insensitive' } },
+            { description: { contains: filters.search, mode: 'insensitive' } },
+            {
+                tourist: {
+                    fullName: { contains: filters.search, mode: 'insensitive' }
+                }
+            }
+        ];
+    }
+
+    // Apply specific filters
+    if (filters?.destination) {
+        where.destination = { contains: filters.destination, mode: 'insensitive' };
+    }
+
+    if (filters?.city) {
+        where.city = { contains: filters.city, mode: 'insensitive' };
+    }
+
+    if (filters?.travelType) {
+        where.travelType = filters.travelType;
+    }
+
+    // Budget range filter
+    if (filters?.budgetMin !== undefined || filters?.budgetMax !== undefined) {
+        where.AND = where.AND || [];
+        
+        if (filters.budgetMin !== undefined) {
+            where.AND.push({
+                OR: [
+                    { budgetMin: { gte: filters.budgetMin } },
+                    { budgetMax: { gte: filters.budgetMin } }
+                ]
+            });
+        }
+
+        if (filters.budgetMax !== undefined) {
+            where.AND.push({
+                OR: [
+                    { budgetMin: { lte: filters.budgetMax } },
+                    { budgetMax: { lte: filters.budgetMax } }
+                ]
+            });
+        }
+    }
+
+    // Date range filters
+    if (filters?.startDate) {
+        where.startDate = { gte: filters.startDate };
+    }
+
+    if (filters?.endDate) {
+        where.endDate = { lte: filters.endDate };
+    }
+
     const result = await prisma.travelPlan.findMany({
+        where,
         include: {
             tourist: {
                 include: {
-                    user: true
+                    user: {
+                        select: {
+                            id: true,
+                            email: true,
+                            role: true,
+                            // Don't include password
+                        }
+                    }
                 }
             }
+        },
+        orderBy: {
+            createdAt: 'desc'
         }
     });
 
     return result;
 };
+
+
+
+
+
 
 
 const getSingleTour = async (id: string) => {

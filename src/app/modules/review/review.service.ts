@@ -1,3 +1,4 @@
+import ApiError from "../../error/appError.js";
 import { prisma } from "../../lib/prisma.js";
 
 const createReview= async(travelPlanId:string, reviwerId:string, rating:number, comment:string)=>{
@@ -9,7 +10,7 @@ const createReview= async(travelPlanId:string, reviwerId:string, rating:number, 
     });
 
     if(!reviewer){
-        throw new Error("Reviewer not found");
+        throw new ApiError(404,"Reviewer not found");
     }
 
     const travelPlan = await prisma.travelPlan.findUnique({
@@ -23,13 +24,13 @@ const createReview= async(travelPlanId:string, reviwerId:string, rating:number, 
 
 
     if(!travelPlan){
-        throw new Error("Travel plan not found");
+        throw new ApiError(404,"Travel plan not found");
     }
     
     const targetId = travelPlan.tourist.userId;
 
     if(targetId === reviwerId){
-        throw new Error("You cannot review your own travel plan");
+        throw new ApiError(404,"You cannot review your own travel plan");
     }
 
     const existingReview = await prisma.review.findFirst({
@@ -39,7 +40,7 @@ const createReview= async(travelPlanId:string, reviwerId:string, rating:number, 
         }
     });
     if(existingReview){
-        throw new Error("You have already reviewed this travel plan");
+        throw new ApiError(404,"You have already reviewed this travel plan");
     }
     
     const review = await prisma.review.create({

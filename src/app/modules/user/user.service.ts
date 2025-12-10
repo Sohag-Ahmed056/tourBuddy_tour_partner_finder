@@ -197,6 +197,54 @@ const getAllUsersFromDB = async (params: any, options: IOptions) => {
 };
 
 
+
+// Get single profile
+ const getSingleProfile = async (userId: string) => {
+    // Find basic user
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+    });
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    // If Tourist — return tourist-specific profile
+    if (user.role === "TOURIST") {
+        const tourist = await prisma.tourist.findUnique({
+            where: { userId: user.id },
+            include: {
+                travelPlans: true,
+                reviewsReceived: {
+                    include: {
+                        reviewer: {
+                            include: { user: true },
+                        },
+                    },
+                },
+                joinRequestsReceived: true,
+                joinRequestsSent: true,
+                subscription: true,
+                _count: {
+                    select: {
+                        reviewsReceived: true,
+                    },
+                },
+            },
+        });
+
+        return {
+            ...user,
+            profile: tourist,
+            totalReviewCount: tourist?._count.reviewsReceived || 0,
+            reviews: tourist?.reviewsReceived || []
+        };
+    }
+
+    // For other roles, simply return the user
+    return user;
+};
+
 const updateUser = async (userId: string, payload: any) => {
 
   const user = await prisma.user.findUnique({
@@ -250,5 +298,6 @@ export const UserService = {
   createAdmin,
   getMyProfile,
   updateUser,
-  deleteTourist
+  deleteTourist,
+  getSingleProfile
 };

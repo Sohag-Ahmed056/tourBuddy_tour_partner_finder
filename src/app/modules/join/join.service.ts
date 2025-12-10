@@ -1,4 +1,5 @@
 
+import ApiError from "../../error/appError.js";
 import { prisma } from "../../lib/prisma.js";
 
 const sendJoinRequest = async(senderId: string,  id: string, message: string) => {
@@ -14,12 +15,12 @@ const sendJoinRequest = async(senderId: string,  id: string, message: string) =>
     });
 
     if(!receiverTravelPlan){
-        throw new Error("Travel plan not found");
+        throw new ApiError(404, "Travel plan not found");
     }
 
     const receiverId = receiverTravelPlan.touristId; //userID
     if(receiverId === senderId){
-        throw new Error("You cannot send a join request to your own travel plan");
+        throw new ApiError(404,"You cannot send a join request to your own travel plan");
     }
 
     const existingRequest = await prisma.joinRequest.findFirst({
@@ -32,7 +33,7 @@ const sendJoinRequest = async(senderId: string,  id: string, message: string) =>
     });
 
     if(existingRequest){
-        throw new Error("A pending join request already exists for this travel plan");
+        throw new ApiError(404,"A pending join request already exists for this travel plan");
     }
 
 
@@ -72,17 +73,17 @@ const cancelJoinRequest = async (requestId: string, userId: string) => {
     });
 
     if (!joinRequest) {
-        throw new Error("Join request not found");
+        throw new ApiError(404,"Join request not found");
     }
 
     //  Only sender can cancel
     if (joinRequest.senderId !== userId) {
-        throw new Error("You are not allowed to cancel this join request");
+        throw new ApiError(404,"You are not allowed to cancel this join request");
     }
 
     // Only pending requests can be cancelled
     if (joinRequest.status !== "PENDING") {
-        throw new Error("Only pending join requests can be cancelled");
+        throw new ApiError(404,"Only pending join requests can be cancelled");
     }
 
     // Delete the join request
@@ -131,15 +132,15 @@ const respondToJoinRequest = async(requestId: string, receiverId: string, accept
     });
 
     if(!joinRequest){
-        throw new Error("Join request not found");
+        throw new ApiError(404,"Join request not found");
     }
 
     if(joinRequest.receiverId !== receiverId){
-        throw new Error("You are not authorized to respond to this join request");
+        throw new ApiError(404,"You are not authorized to respond to this join request");
     }
 
     if(joinRequest.status !== "PENDING"){
-        throw new Error("This join request has already been responded to");
+        throw new ApiError(404,"This join request has already been responded to");
     }
 
     const updatedRequest = await prisma.joinRequest.update({

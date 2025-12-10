@@ -22,6 +22,6 @@ router.delete("/delete", UserController.deleteUser);
 router.get("/all", UserController.getAllUsersFromDB);
 router.get("/my-profile",auth("TOURIST"), UserController.getMyProfile);
 router.put("/update-user", fileUploader.upload.single('file'),auth("TOURIST"), UserController.updateUser);
-
+router.get("/get-user/:id", UserController.getSingleProfile);
 
 export const userRoutes = router;

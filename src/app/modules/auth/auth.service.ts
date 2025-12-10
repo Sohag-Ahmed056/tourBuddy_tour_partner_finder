@@ -5,16 +5,20 @@ import { prisma } from "../../lib/prisma.js";
 import bcrypt from "bcrypt";
 
 const login = async (payload: { email: string, password: string }) => {
-    const user = await prisma.user.findUniqueOrThrow({
+    const user = await prisma.user.findUnique({
         where: {
             email: payload.email,
     
         }
     })
 
+    if (!user) {
+        throw new ApiError(404, "credentials are incorrect!")
+    }
+
     const isCorrectPassword = await bcrypt.compare(payload.password, user.password);
     if (!isCorrectPassword) {
-        throw new ApiError(401, "Password is incorrect!")
+        throw new ApiError(401, "credentials is incorrect!")
     }
 
     const accessToken = jwtHelper.generateToken({id: user.id, email: user.email, role: user.role }, "abcd", "1h");

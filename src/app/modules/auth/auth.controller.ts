@@ -37,8 +37,9 @@ const login = catchAsync(async (req: Request, res: Response) => {
 
 
 const changePassword = catchAsync(async (req: Request, res: Response) => {
+    const userId = req.user?.id as string;
 
-    const { userId, oldPassword, newPassword } = req.body;
+    const { oldPassword, newPassword } = req.body;
     const result = await AuthService.changePassword(userId, oldPassword, newPassword);
     sendResponse(res, {
         statusCode: 200,

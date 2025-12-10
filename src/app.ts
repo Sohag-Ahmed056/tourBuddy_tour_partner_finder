@@ -6,13 +6,14 @@ import dotenv from "dotenv";
 import cors from 'cors'
 import { paymentController } from "./app/modules/payment/payment.controller.js";
 import router from "./app/routes/index.js";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler.js";
 
 dotenv.config();
 const app = express();
 
 // ------------------ CORS (before webhook) -------------------------
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: 'https://tour-buddy-find-your-partner-client.vercel.app/', 
   credentials: true
 }));
 
@@ -36,5 +37,6 @@ app.use("/api/v1", router);
 app.get("/", (req, res) => {
   res.json({ message: "Don't worry, I'm running smoothly!" });
 });
+app.use(globalErrorHandler);
 
 export default app;

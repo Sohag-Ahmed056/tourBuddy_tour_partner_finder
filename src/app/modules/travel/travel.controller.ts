@@ -19,16 +19,80 @@ const createTour = catchAsync(async (req: Request, res: Response) => {
 });
 
 
-const getAllTravelPlans = catchAsync(async (req: Request, res: Response) => {
-    const result = await TravelService.getAllTours();
+// const getAllTravelPlans = catchAsync(async (req: Request, res: Response) => {
+//     const result = await TravelService.getAllTours();
 
-   sendResponse(res, {
+//    sendResponse(res, {
+//         statusCode: 200,
+//         success: true,
+//         message: "Travel plans retrieved successfully",
+//         data: result,
+//     });
+// });
+
+
+
+const getAllTravelPlans = catchAsync(async (req: Request, res: Response) => {
+    const { 
+        destination, 
+        city, 
+        travelType, 
+        budgetMin, 
+        budgetMax, 
+        startDate, 
+        endDate,
+        search 
+    } = req.query;
+
+    // Build filters object
+    const filters: any = {};
+
+    if (search) {
+        filters.search = search as string;
+    }
+
+    if (destination) {
+        filters.destination = destination as string;
+    }
+
+    if (city) {
+        filters.city = city as string;
+    }
+
+    if (travelType) {
+        filters.travelType = travelType as string;
+    }
+
+    if (budgetMin) {
+        filters.budgetMin = parseInt(budgetMin as string);
+    }
+
+    if (budgetMax) {
+        filters.budgetMax = parseInt(budgetMax as string);
+    }
+
+    if (startDate) {
+        filters.startDate = new Date(startDate as string);
+    }
+
+    if (endDate) {
+        filters.endDate = new Date(endDate as string);
+    }
+
+    // Pass filters to service (if no filters provided, it returns all)
+    const result = await TravelService.getAllTours(
+        Object.keys(filters).length > 0 ? filters : undefined
+    );
+
+    sendResponse(res, {
         statusCode: 200,
         success: true,
         message: "Travel plans retrieved successfully",
         data: result,
     });
 });
+
+
 
 const getSingleTravelPlan = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
