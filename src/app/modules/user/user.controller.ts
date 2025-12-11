@@ -109,6 +109,8 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
 
   // Parse payload from FormData JSON if sent as "data"
   const payload = req.body.data ? JSON.parse(req.body.data) : req.body;
+  console.log(payload);
+  console.log(req.file);
 
   // Optional file upload
   if (req.file) {

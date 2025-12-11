@@ -31,7 +31,7 @@ const handleStripeWebhook = async (req: Request, res: Response) => {
 
   let event;
   try {
-    // ✅ Async version ensures SubtleCrypto works in Node >= 18 / ESM
+ 
     event = await stripe.webhooks.constructEventAsync(
       req.body as Buffer,
       sig,

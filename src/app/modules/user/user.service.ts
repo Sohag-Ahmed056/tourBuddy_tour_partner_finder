@@ -6,6 +6,7 @@ import { IOptions, paginationHelper } from "../../helper/pagination.js";
 
 import { stringSearchableFields } from "./user.constant.js";
 import { Prisma } from "@prisma/client";
+import ApiError from "../../error/appError.js";
 
 
 
@@ -252,7 +253,7 @@ const updateUser = async (userId: string, payload: any) => {
   });
 
   if (!user) {
-    throw new Error("User not found");
+    throw new ApiError(404,"User not found");
   }
 
   // Only update tourist profile if the user is a TOURIST
@@ -267,7 +268,8 @@ const updateUser = async (userId: string, payload: any) => {
       visitedCountries: payload.visitedCountries,
       interests: payload.interests,
     };
-
+      
+    console.log(payload.profileImage);
     // Only set profileImage if it's provided
     if (payload.profileImage) {
       updateData.profileImage = payload.profileImage;

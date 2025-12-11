@@ -13,7 +13,7 @@ const app = express();
 
 // ------------------ CORS (before webhook) -------------------------
 app.use(cors({
-  origin: 'https://tour-buddy-find-your-partner-client.vercel.app/', 
+  origin: 'https://tour-buddy-find-your-partner-client.vercel.app', 
   credentials: true
 }));
 

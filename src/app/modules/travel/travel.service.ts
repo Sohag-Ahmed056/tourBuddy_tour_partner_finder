@@ -1,3 +1,4 @@
+import ApiError from "../../error/appError.js";
 import { prisma } from "../../lib/prisma.js";
 
 
@@ -170,7 +171,7 @@ const getSingleTour = async (id: string) => {
   });
 
   if (!result) {
-    throw new Error("Travel plan not found");
+    throw new ApiError(404,"Travel plan not found");
   }
 
   return result;
