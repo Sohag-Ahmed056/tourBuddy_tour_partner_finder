@@ -1,6 +1,6 @@
 {
   "name": "assignment_8",
- 
+  "module": "index.ts",
   "main": "src/app.js",
   "prisma": {
     "schema": "./prisma/schema"
@@ -46,6 +46,6 @@
     "typescript": "^5.9.3",
     "@types/bun": "latest"
   },
-  "type": "module",
+ 
   "private": true
 }
