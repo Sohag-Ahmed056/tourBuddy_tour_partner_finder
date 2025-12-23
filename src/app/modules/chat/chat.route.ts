@@ -3,6 +3,8 @@ import { ChatControllers } from './chat.controller';
 import auth from '../../middlewares/auth'; // Your existing auth middleware
 import { UserRole } from '@prisma/client';
 
+
+
 const router = express.Router();
 
 // Initialize or Retrieve a chat (Requires 'otherUserId' and 'travelPlanId')

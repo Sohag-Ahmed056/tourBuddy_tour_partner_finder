@@ -5,8 +5,10 @@ import bcrypt from "bcrypt";
 import { IOptions, paginationHelper } from "../../helper/pagination.js";
 
 import { stringSearchableFields } from "./user.constant.js";
-import { Prisma } from "@prisma/client";
+
 import ApiError from "../../error/appError.js";
+import { Prisma } from "@prisma/client";
+
 
 
 

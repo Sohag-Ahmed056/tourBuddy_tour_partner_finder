@@ -42,7 +42,7 @@ CREATE TABLE "JoinRequest" (
     "senderId" TEXT NOT NULL,
     "receiverId" TEXT NOT NULL,
     "travelPlanId" TEXT NOT NULL,
-    "status" "RequestStatus" NOT NULL DEFAULT 'PENDING',
+    "status" "RequestStatus" NOT NULL DEFAULT 'ACCEPTED',
     "message" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

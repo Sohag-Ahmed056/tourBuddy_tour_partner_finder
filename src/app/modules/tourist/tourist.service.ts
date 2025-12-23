@@ -1,4 +1,5 @@
 
+
 import { Prisma, Tourist } from "@prisma/client";
 import { IOptions, paginationHelper } from "../../helper/pagination.js";
 import { prisma } from "../../lib/prisma.js";
