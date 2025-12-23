@@ -1,0 +1,26 @@
+model Conversation {
+  id             String   @id @default(uuid())
+  travelPlanId   String
+  participantAId String
+  participantBId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  travelPlan   TravelPlan @relation(fields: [travelPlanId], references: [id])
+  participantA Tourist    @relation("ParticipantA", fields: [participantAId], references: [userId])
+  participantB Tourist    @relation("ParticipantB", fields: [participantBId], references: [userId])
+  messages     Message[]
+
+  @@unique([travelPlanId, participantAId, participantBId])
+}
+
+model Message {
+  id             String   @id @default(uuid())
+  conversationId String
+  senderId       String
+  content        String
+  createdAt      DateTime @default(now())
+
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+  sender       Tourist      @relation("SentMessages", fields: [senderId], references: [userId])
+}

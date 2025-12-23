@@ -3,7 +3,7 @@ model JoinRequest {
   senderId     String
   receiverId   String
   travelPlanId String
-  status       RequestStatus @default(PENDING)
+  status       RequestStatus @default(ACCEPTED)
   message      String?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt

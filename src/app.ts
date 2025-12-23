@@ -7,9 +7,11 @@ import cors from 'cors'
 import { paymentController } from "./app/modules/payment/payment.controller.js";
 import router from "./app/routes/index.js";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler.js";
+import { initSocket } from "./socket.js";
 
 dotenv.config();
 const app = express();
+
 
 // ------------------ CORS (before webhook) -------------------------
 app.use(cors({

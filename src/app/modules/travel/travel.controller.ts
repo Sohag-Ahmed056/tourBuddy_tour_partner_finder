@@ -122,6 +122,31 @@ const updateTravelPlan = catchAsync(async (req: Request, res: Response) => {
     });
 }); 
 
+const getAITourSuggestions = catchAsync(async (req: Request, res: Response) => {
+    const { preferences } = req.body;
+
+    // 1. Validation: Ensure the user provided travel preferences
+    // if (!preferences || typeof preferences !== 'string' || preferences.trim().length < 5) {
+    //     return res.status(400).json({
+    //         success: false,
+    //         message: 'Please provide valid travel preferences (e.g., destination, budget, or activities).',
+    //     });
+    // }
+
+    // 2. Call the service logic we created earlier
+    const result = await TravelService.getAITourSuggestion({ 
+        preferences: preferences.trim() 
+    });
+
+    // 3. Send the response back to the client
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'AI tour suggestions retrieved successfully',
+        data: result,
+    });
+});
+
 const deleteTravelPlan = catchAsync(async (req: Request, res: Response) => {    
     const id = req.params.id; 
     const userId = req.user?.id as string;
@@ -145,5 +170,6 @@ export const TravelController = {
     getAllTravelPlans,
     updateTravelPlan,
     deleteTravelPlan,
-    getSingleTravelPlan
+    getSingleTravelPlan,
+    getAITourSuggestions
 }

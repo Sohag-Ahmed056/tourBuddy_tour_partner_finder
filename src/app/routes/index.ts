@@ -6,6 +6,7 @@ import { TravelRoutes } from "../modules/travel/travel.route.js";
 import { joinRoute } from "../modules/join/join.route.js";
 import { reviewRoutes } from "../modules/review/review.route.js";
 import { paymentRoute } from "../modules/payment/payment.route.js";
+import { ChatRoutes } from "../modules/chat/chat.route.js";
 
 
 const router = Router();
@@ -38,6 +39,10 @@ const moduleRoutes = [
     {
         path: '/payment',
         route: paymentRoute
+    },
+    {
+        path: '/chat',
+        route:ChatRoutes
     }
     
 ];

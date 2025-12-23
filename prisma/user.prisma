@@ -33,6 +33,9 @@ model Tourist {
   joinRequestsReceived JoinRequest[]     @relation("ReceivedRequests")
   subscription         SubscriptionPlan?
   payments             Payment[]
+  sentMessages         Message[]         @relation("SentMessages")
+  conversationsAsA     Conversation[]    @relation("ParticipantA")
+  conversationsAsB     Conversation[]    @relation("ParticipantB")
 }
 
 // Admin table

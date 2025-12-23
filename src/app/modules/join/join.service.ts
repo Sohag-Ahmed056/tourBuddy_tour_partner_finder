@@ -28,7 +28,7 @@ const sendJoinRequest = async(senderId: string,  id: string, message: string) =>
             senderId,
             receiverId,
             travelPlanId,
-            status: "PENDING"
+            status: "ACCEPTED"
         }
     });
 

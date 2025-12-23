@@ -1,4 +1,5 @@
 import ApiError from "../../error/appError.js";
+import { askOpenRouter } from "../../helper/openRouterConfig.js";
 import { prisma } from "../../lib/prisma.js";
 
 
@@ -178,6 +179,87 @@ const getSingleTour = async (id: string) => {
 };
 
 
+
+
+const getAITourSuggestion = async (input: { preferences: string }) => {
+  // 1. Fetch plans and include the linked Tourist data
+  const travelPlans = await prisma.travelPlan.findMany({
+    where: { 
+      visibility: true, // Only suggest public plans
+    },
+    include: {
+      tourist: true, // Includes fullName, bio, profileImage, etc.
+    },
+  });
+
+  if (travelPlans.length === 0) return [];
+
+  // 2. Map data to a clean format for the AI
+  const simplifiedPlans = travelPlans.map((plan) => ({
+    id: plan.id,
+    title: plan.title,
+    destination: plan.destination,
+    city: plan.city,
+    travelType: plan.travelType,
+    budget: `${plan.budgetMin} - ${plan.budgetMax}`,
+    description: plan.description,
+    startDate: plan.startDate,
+    endDate: plan.endDate,
+    // Tourist details
+    organizerName: plan.tourist.fullName,
+    organizerBio: plan.tourist.bio,
+    organizerImage: plan.tourist.profileImage,
+  }));
+
+  const systemMessage = {
+    role: "system",
+    content: `You are an expert travel AI. Your goal is to match travelers to existing travel plans based on their interests. Analyze the user's preferences and find the most relevant trips from the provided list.`,
+  };
+
+  const userMessage = {
+    role: "user",
+    content: `
+User Preferences: "${input.preferences}"
+
+Available Travel Plans (JSON):
+${JSON.stringify(simplifiedPlans, null, 2)}
+
+CRITICAL INSTRUCTIONS:
+1. Match the preferences to the "title", "destination", "description", and "budget".
+2. Pick the top 5 most relevant matches.
+3. For each match, provide a brief "matchReason" (1 sentence).
+4. Return ONLY a valid JSON array using these EXACT keys:
+   - id, title, destination, city, travelType, budget, startDate, endDate, organizerName, organizerImage, matchReason
+
+RESPOND ONLY WITH THE JSON ARRAY.
+`,
+  };
+
+  try {
+    const response = await askOpenRouter([systemMessage, userMessage]);
+
+    // Clean and Parse JSON
+    const cleanedJson = response
+      .replace(/```(?:json)?\s*/g, "")
+      .replace(/```$/g, "")
+      .trim();
+
+    const suggestedTours = JSON.parse(cleanedJson);
+
+    if (!Array.isArray(suggestedTours)) {
+      throw new Error("AI response is not an array");
+    }
+
+    return suggestedTours;
+  } catch (error) {
+    console.error('Error in AI Tour Suggestion:', error);
+    // Fallback: Return top 5 most recent plans if AI fails
+    return simplifiedPlans.slice(0, 5).map(plan => ({
+      ...plan,
+      matchReason: "Highly recommended based on current popularity."
+    }));
+  }
+};
 const updateTravelPlan = async ({
   travelPlanId,
   touristId,
@@ -285,4 +367,5 @@ export const TravelService = {
     updateTravelPlan,
     deleteTravelPlan,
     getSingleTour,
+    getAITourSuggestion
 }
