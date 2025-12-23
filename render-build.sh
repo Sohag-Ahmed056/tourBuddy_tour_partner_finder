@@ -2,5 +2,5 @@
 set -o errexit
 
 bun install
-npx prisma generate
+ npx prisma generate --schema ./prisma
 bun run build
