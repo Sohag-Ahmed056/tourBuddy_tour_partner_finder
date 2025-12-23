@@ -2,5 +2,5 @@
 set -o errexit
 
 bun install
-bun run db:generate
+bunx prisma generate
 bun run build
